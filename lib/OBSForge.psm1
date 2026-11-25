@@ -13,7 +13,7 @@ Every OBS key written here was checked against the OBS 33.0.2 source:
   frontend/widgets/OBSBasic_SceneCollections.cpp (global audio device keys)
 #>
 
-$script:PackVersion = '0.2.0'
+$script:PackVersion = '0.2.1'
 $script:PackRoot = Split-Path -Parent $PSScriptRoot
 $script:MarkerName = 'obs-forge.json'
 $script:ProfilePrefix = 'OBS-Forge '
@@ -708,7 +708,7 @@ function New-ForgeCollection {
     param([string]$Name, [int]$Width, [int]$Height)
     $Sources = New-Object System.Collections.ArrayList
     $Scenes = New-Object System.Collections.ArrayList
-    $Bg = 4279177493     # 0xFF0F0F15, near-black
+    $Bg = 4280227346     # 0xFF1F1612 (OBS stores ABGR) = RGB #12161F, the OBS-Forge slate
     $FontSize = [int][math]::Round(120 * [math]::Min($Width, $Height) / 1080)
 
     foreach ($Scene in @('Starting Soon', 'Live', 'BRB', 'Ending')) {

@@ -210,7 +210,7 @@ Test-Case 'clean install, verify, re-run, force, encoder switch' {
     foreach ($N in 'OBS-Forge 1080p60', 'OBS-Forge 1080p30') {
         $D = Join-Path $R "basic\profiles\$N"
         foreach ($F in 'basic.ini', 'streamEncoder.json', 'recordEncoder.json', 'obs-forge.json') { Assert (Test-Path -LiteralPath (Join-Path $D $F)) "$N/$F written" }
-        AssertEq '0.2.0' (Read-Json (Join-Path $D 'obs-forge.json')).version "$N marker version"
+        AssertEq (Get-ForgeVersion) (Read-Json (Join-Path $D 'obs-forge.json')).version "$N marker version"
         $Bytes = [System.IO.File]::ReadAllBytes((Join-Path $D 'basic.ini'))
         Assert ($Bytes[0] -eq 0xEF -and $Bytes[1] -eq 0xBB -and $Bytes[2] -eq 0xBF) "$N basic.ini has the UTF-8 BOM OBS writes"
     }

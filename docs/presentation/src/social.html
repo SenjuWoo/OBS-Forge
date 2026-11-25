@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 1280px; height: 640px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+    color: #e8edf5;
+    background:
+      radial-gradient(900px 520px at 18% 42%, rgba(255,106,43,0.16), transparent 60%),
+      radial-gradient(700px 500px at 92% 110%, rgba(80,120,255,0.10), transparent 60%),
+      linear-gradient(160deg, #141a25 0%, #0b0e14 100%);
+    display: flex; align-items: center;
+  }
+  .wrap { display: flex; align-items: center; gap: 64px; padding: 0 104px; }
+  .logo { width: 300px; height: 300px; flex: none; filter: drop-shadow(0 24px 48px rgba(0,0,0,0.55)); }
+  h1 { margin: 0; font-size: 96px; font-weight: 700; letter-spacing: -2.5px; line-height: 1; }
+  h1 span { color: #ff7a3c; }
+  p { margin: 22px 0 34px; font-size: 32px; line-height: 1.3; color: #b8c2d3; max-width: 680px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; max-width: 700px; }
+  .chip { font-size: 22px; font-weight: 600; padding: 9px 18px; border-radius: 999px;
+          background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #dfe6f1; }
+  .chip.hot { background: rgba(255,106,43,0.14); border-color: rgba(255,122,60,0.45); color: #ffc7a6; }
+</style></head>
+<body>
+  <div class="wrap">
+    <img class="logo" src="logo.svg" alt="">
+    <div>
+      <h1>OBS<span>-</span>Forge</h1>
+      <p>Ready-made OBS Studio setups for streaming and recording, tuned for the GPU you have.</p>
+      <div class="chips">
+        <span class="chip hot">Twitch · Kick · YouTube</span>
+        <span class="chip hot">Recording · Vertical</span>
+        <span class="chip">NVENC · AMF · Quick Sync · x264</span>
+        <span class="chip">SDR 8-bit Rec.709</span>
+      </div>
+    </div>
+  </div>
+</body></html>

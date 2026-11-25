@@ -10,11 +10,13 @@ Only runtime files go in: scripts, launchers, lib, presets, docs, README, LICENS
 [CmdletBinding()]
 param(
     [string]$Ref = 'HEAD',
-    [string]$OutDir = (Join-Path (Split-Path -Parent $PSScriptRoot) 'dist')
+    [string]$OutDir
 )
 
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
+# Relative to the repo, not the caller's folder (PS 5.1 has no $PSScriptRoot in param defaults).
+if (-not $OutDir) { $OutDir = Join-Path $Root 'dist' }
 Import-Module (Join-Path $Root 'lib\OBSForge.psm1') -Force
 $Version = Get-ForgeVersion
 
@@ -34,7 +36,8 @@ if ($CommitVersion -ne $Version) { Write-Warning "Commit $Sha has version $Commi
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 $Zip = Join-Path (Resolve-Path -LiteralPath $OutDir).Path "OBS-Forge-$Version.zip"
 if (Test-Path -LiteralPath $Zip) { Remove-Item -LiteralPath $Zip -Force }
-git -C $Root archive --format=zip --prefix="OBS-Forge-$Version/" -o $Zip $Sha -- @Include
+# README images (docs/presentation) are for the GitHub page, not the download.
+git -C $Root archive --format=zip --prefix="OBS-Forge-$Version/" -o $Zip $Sha -- @Include ':(exclude)docs/presentation'
 if ($LASTEXITCODE -ne 0) { throw 'git archive failed' }
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem

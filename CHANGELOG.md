@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1 (2026-11-24)
+
+- New logo, GitHub social card and README with real OBS screenshots (main window, Output
+  and Advanced settings) plus the real installer and Verify output.
+- Scene backgrounds use the OBS-Forge slate (#12161F) instead of a warm near-black.
+  Existing collections are not changed; `-Force` regenerates them.
+- `tools\Build-Release.ps1` and the new `tools\Capture-Screenshots.ps1` /
+  `tools\Render-Presentation.ps1` resolve their default output folder from the repository
+  (Windows PowerShell 5.1 leaves `$PSScriptRoot` empty in parameter defaults). The release
+  zip leaves the README images out.
+
 ## 0.2.0 (2026-11-24)
 
 New

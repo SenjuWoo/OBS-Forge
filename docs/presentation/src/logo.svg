@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <title>OBS-Forge</title>
+  <defs>
+    <linearGradient id="badge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#232b3a"/>
+      <stop offset="1" stop-color="#0e121a"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef2f8"/>
+      <stop offset="0.55" stop-color="#b9c3d3"/>
+      <stop offset="1" stop-color="#7d889b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff7a2f" stop-opacity="0.55"/>
+      <stop offset="0.6" stop-color="#ff5a1f" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#ff5a1f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ember" cx="0.38" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#ffd2a1"/>
+      <stop offset="0.35" stop-color="#ff6a2b"/>
+      <stop offset="1" stop-color="#e0262b"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="12" y="12" width="232" height="232" rx="56" fill="url(#badge)"/>
+  <rect x="12.75" y="12.75" width="230.5" height="230.5" rx="55.25" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1.5"/>
+
+  <g transform="translate(0 10)">
+  <!-- ember / record light: a forge ember that doubles as the REC dot -->
+  <circle cx="128" cy="78" r="58" fill="url(#glow)"/>
+  <circle cx="128" cy="78" r="29" fill="none" stroke="#ff4d36" stroke-opacity="0.7" stroke-width="4"/>
+  <circle cx="128" cy="78" r="19" fill="url(#ember)"/>
+  <!-- sparks -->
+  <g stroke="#ffb27a" stroke-width="5" stroke-linecap="round">
+    <line x1="128" y1="26" x2="128" y2="36"/>
+    <line x1="86" y1="44" x2="93" y2="51"/>
+    <line x1="170" y1="44" x2="163" y2="51"/>
+  </g>
+
+  <!-- anvil -->
+  <path fill="url(#steel)" d="M36 116 C 58 112 70 111 82 111 L 214 111 L 214 135 L 184 135
+    C 175 135 170 141 170 150 L 170 158 L 190 176 L 190 192 L 96 192 L 96 176 L 116 158
+    L 116 150 C 116 141 111 135 102 135 L 88 135 C 66 135 50 129 36 116 Z"/>
+  <path fill="#ffffff" fill-opacity="0.55" d="M82 111 L 214 111 L 214 116 L 82 116 C 70 116 58 117 44 119 C 52 115 66 111 82 111 Z"/>
+  </g>
+</svg>

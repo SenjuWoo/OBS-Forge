@@ -1,6 +1,6 @@
 # STATE · OBS-Forge
 
-Updated 2026-11-24 · **0.2.0** (last known good: v0.2.0; previous v0.1.0)
+Updated 2026-11-24 · **0.2.1** (last known good: v0.2.0 until v0.2.1 is released green)
 
 **Goal.** A fresh OBS install that streams or records well in one install step, on any
 GPU: SDR 8-bit Rec.709, presets for Twitch/Kick/Rumble, YouTube, recording and vertical,
@@ -28,7 +28,9 @@ claim (F5). See PLAN.md for every finding and its evidence.
 - Not runtime-proven here (no such GPU): AMF and Quick Sync presets. Their keys come from
   OBS 33.0.2 source (texture-amf.cpp, obs-qsv11.c).
 
-**NEXT ACTION.** None pending. v0.2.0 released from 2a0e6c5 (CI green on 5.1 + 7); asset verified. Next work: field-test AMF / Quick Sync profiles.
+**NEXT ACTION.** 0.2.1 presentation release: push, CI green on the exact SHA, zip from that SHA, release v0.2.1 with hero image, set repo description/topics/social preview.
+
+**Presentation.** Logo `docs/presentation/src/logo.svg`; images regenerate with `tools\Capture-Screenshots.ps1` (real OBS, portable junction copy) then `tools\Render-Presentation.ps1` (Edge headless). `presentation_check.py --kind tool`: PASS.
 
 **Open items.** Field-test AMF / Quick Sync profiles on real hardware. Consider an
 `-Activate` switch only if users ask (it would need writing OBS's `user.ini`, which the
