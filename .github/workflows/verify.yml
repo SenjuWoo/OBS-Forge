@@ -1,0 +1,19 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install into a clean config root
+        shell: pwsh
+        run: ./Install.ps1 -ConfigRoot "$env:RUNNER_TEMP\obs"
+
+      - name: Verify profiles, encoders and log
+        shell: pwsh
+        run: ./Verify.ps1 -ConfigRoot "$env:RUNNER_TEMP\obs"
