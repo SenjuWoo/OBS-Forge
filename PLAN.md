@@ -80,8 +80,8 @@ runtime-proven on this NVIDIA-only machine.
 | V1 | Logo (SVG + 512 px PNG), 1280x640 social card | complete | – | `file:docs/presentation/logo.png` | rendered with Edge headless; checked at 64 px |
 | V2 | Real OBS screenshots: main window, Output, Advanced settings; 16:9 hero | complete | – | `cmd:tools/Capture-Screenshots.ps1` | exit=0; values visible match the pack (NVENC CBR 6000/2 s/P5/bf 2, NV12/709/Limited/300) |
 | V3 | README rewrite: hero, badges, gallery, troubleshooting | complete | V1,V2 | `cmd:python TOOLS/presentation_check.py . --kind tool` | Result: PASS |
-| V4 | Release v0.2.1 so screenshots match the download (slate background) | pending | V3 | `cmd:gh release view v0.2.1` | - |
-| V5 | Repo description, topics, homepage, social preview | pending | V1 | `cmd:gh repo view --json description,repositoryTopics` | - |
+| V4 | Release v0.2.1 so screenshots match the download (slate background) | complete | V3 | `cmd:gh release view v0.2.1` | cmd:gh release view v0.2.1 @ 7bdb952 (CI success) - zip sha256 b3069a71..., downloaded bytes match, install -Preset all + Verify PASS from the download |
+| V5 | Repo description, topics, homepage, social preview | pending | V1 | `cmd:gh repo view --json description,repositoryTopics` | description/topics/homepage set (gh repo view); social preview needs the owner signed in on github.com (no API) - upload docs/presentation/social-preview.png |
 
 - `$PSScriptRoot` is empty in a param default under Windows PowerShell 5.1 (observed:
   `Split-Path` bound an empty string in `tools/Capture-Screenshots.ps1`); `Build-Release.ps1`
