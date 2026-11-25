@@ -17,6 +17,8 @@ $Host_ = (Get-Process -Id $PID).Path
 $Work = Join-Path ([System.IO.Path]::GetTempPath()) ("obsforge-tests-" + [guid]::NewGuid().ToString('N').Substring(0, 8))
 New-Item -ItemType Directory -Force -Path $Work | Out-Null
 $env:OBSFORGE_BACKUP_ROOT = Join-Path $Work 'backups'
+# A GPU no family matches, like a CI runner: results must not depend on this PC's GPU.
+$env:OBSFORGE_GPU_NAMES = 'Microsoft Basic Display Adapter'
 
 $script:Pass = 0
 $script:Failures = New-Object System.Collections.ArrayList
@@ -156,6 +158,7 @@ Test-Case 'capability fallbacks' {
     AssertEq 'amf' (Select-ForgeEncoder $Amf) 'AMF before Quick Sync'
     AssertEq $false (Test-ForgeEncoderAvailable 'nvenc' $Amf) 'NVENC unavailable on AMD'
     AssertEq $true (Test-ForgeEncoderAvailable 'x264' $CapsNone) 'x264 always available'
+    AssertEq '' "$(Test-ForgeEncoderAvailable 'nvenc' $CapsNone)" 'nothing probed -> unknown, not unavailable'
 }
 
 Test-Case 'INI merge keeps user keys, hotkeys and soft settings' {
@@ -217,6 +220,15 @@ Test-Case 'clean install, verify, re-run, force, encoder switch' {
     $V = Invoke-Script 'Verify.ps1' @('-ConfigRoot', $R, '-NoProbe')
     AssertEq 0 $V.Code "verify exit`n$($V.Out)"
     Assert ($V.Out -match 'Verify: PASS') 'verify says PASS'
+    Assert ($V.Out -match 'warn OBS-Forge 1080p60 uses NVIDIA NVENC; no matching GPU name') "a GPU-name guess is a warning, not a FAIL`n$($V.Out)"
+
+    $Auto = New-Root 'auto'
+    $env:OBSFORGE_GPU_NAMES = 'AMD Radeon RX 7800 XT'
+    $A = Invoke-Script 'Install.ps1' @('-ConfigRoot', $Auto, '-NoProbe', '-Preset', '1080p60', '-IgnoreRunning')
+    $env:OBSFORGE_GPU_NAMES = 'Microsoft Basic Display Adapter'
+    AssertEq 'h264_texture_amf' (Read-Ini (Join-Path $Auto 'basic\profiles\OBS-Forge 1080p60\basic.ini'))['AdvOut']['Encoder'] "auto picks AMF from an AMD GPU name`n$($A.Out)"
+    $B = Invoke-Script 'Install.ps1' @('-ConfigRoot', (New-Root 'auto2'), '-NoProbe', '-Preset', '1080p60', '-IgnoreRunning')
+    Assert ($B.Out -match 'encoder: x264 \(CPU\)') "auto falls back to x264 with no known GPU`n$($B.Out)"
 
     $Again = Invoke-Script 'Install.ps1' @('-ConfigRoot', $R, '-NoProbe', '-Encoder', 'nvenc', '-IgnoreRunning')
     AssertEq 0 $Again.Code 're-run exit'

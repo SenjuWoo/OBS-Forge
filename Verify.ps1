@@ -124,7 +124,13 @@ foreach ($Prof in $Installed) {
     if ($Family) {
         $Avail = Test-ForgeEncoderAvailable $Family $Caps
         if ($Avail -eq $true) { Ok "$Name encoder $($Families[$Family].Label) available on this PC" }
-        elseif ($Avail -eq $false) { Bad "$Name uses $($Families[$Family].Label), which this PC does not have - run Install.ps1 (auto-detects) or Install.ps1 -Encoder <yours>" }
+        elseif ($Avail -eq $false -and $Caps.Source -eq 'obs-probe') {
+            Bad "$Name uses $($Families[$Family].Label), which OBS's encoder probe does not find on this PC - run Install.ps1 (auto-detects) or Install.ps1 -Encoder <yours>"
+        }
+        elseif ($Avail -eq $false) {
+            # Only a GPU-name guess (OBS not found): worth a warning, not proof.
+            Warn "$Name uses $($Families[$Family].Label); no matching GPU name seen ($(@($Caps.Gpus) -join ', ')) - OBS not found, so not probed"
+        }
     }
     elseif ($StreamId) { Warn "$Name stream encoder '$StreamId' is not one the pack knows" }
 

@@ -165,6 +165,8 @@ function Invoke-ForgeProbeExe {
 }
 
 function Get-ForgeGpuNames {
+    # OBSFORGE_GPU_NAMES (';'-separated) overrides WMI so tests behave the same on any machine.
+    if ($env:OBSFORGE_GPU_NAMES) { return @($env:OBSFORGE_GPU_NAMES -split ';' | Where-Object { $_ }) }
     try { return @(Get-CimInstance -ClassName Win32_VideoController -ErrorAction Stop | ForEach-Object { $_.Name } | Where-Object { $_ }) }
     catch { return @() }
 }
