@@ -46,7 +46,8 @@ anyway (console remote play, most PC games in SDR).
 3. Point that instance at YouTube only.
 4. Accept the extra GPU load, or lower the game's settings.
 
-There is no switch in this pack that does it, on purpose.
+There is no switch in this pack that does it, on purpose. The `youtube-*` presets stream
+HEVC **Main (8-bit) Rec.709** - SDR at a lower bitrate than H.264, not HDR.
 
 ## Windows HDR and tone mapping
 

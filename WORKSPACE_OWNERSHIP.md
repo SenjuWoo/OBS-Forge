@@ -10,8 +10,14 @@
 - Read-only inputs: none at runtime. The pack writes only into the OBS configuration
   folder the operator points it at (`%APPDATA%\obs-studio` by default).
 - Managed outside this folder (written by `Install.ps1` / `Uninstall.ps1`, always after a
-  backup into `backups\`): `%APPDATA%\obs-studio\basic\profiles\OBS-Forge 1080p60`,
-  `...\OBS-Forge 1080p30`, `...\basic\scenes\OBS-Forge.json`.
+  backup into `backups\` or `%LOCALAPPDATA%\OBS-Forge\backups`):
+  `%APPDATA%\obs-studio\basic\profiles\OBS-Forge *` (each holds an `obs-forge.json`
+  marker; the two 0.1.0 profiles have none), `...\basic\scenes\OBS-Forge.json`,
+  `...\basic\scenes\OBS-Forge Vertical.json`. Diagnostic log:
+  `%LOCALAPPDATA%\OBS-Forge\logs\obs-forge.log`.
+- Source of truth: `presets/presets.psd1` (catalogue) and `lib/OBSForge.psm1` (builders).
+  Profiles are generated at install time; `tests/fixtures/v0.1.0` keeps the 0.1.0 files
+  for the golden and upgrade tests.
 - Never modified: any other profile, any other scene collection, `global.ini`, `user.ini`.
 - Secrets: none stored here, ever.
 - Recovery: `Uninstall.ps1` restores nothing but removes only this pack's files; the

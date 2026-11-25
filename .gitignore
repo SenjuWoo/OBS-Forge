@@ -1,5 +1,8 @@
 backups/
+dist/
+logs/
 *.zip
 *.log
+*.forge-tmp
 .venv/
 __pycache__/

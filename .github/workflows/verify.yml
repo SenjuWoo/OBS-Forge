@@ -4,16 +4,37 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows PowerShell 5.1 is what Install.cmd and most users run; pwsh is PowerShell 7.
+        shell: [powershell, pwsh]
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - name: Install into a clean config root
-        shell: pwsh
-        run: ./Install.ps1 -ConfigRoot "$env:RUNNER_TEMP\obs"
+      - name: Test suite (generator, install, upgrade from 0.1.0, verify, uninstall)
+        run: ./tests/Run-Tests.ps1
 
-      - name: Verify profiles, encoders and log
-        shell: pwsh
+      - name: Install every preset into a clean config root
+        run: ./Install.ps1 -ConfigRoot "$env:RUNNER_TEMP\obs" -Preset all -IgnoreRunning
+
+      - name: Verify the install
         run: ./Verify.ps1 -ConfigRoot "$env:RUNNER_TEMP\obs"
+
+      - name: Uninstall leaves nothing behind
+        run: |
+          ./Uninstall.ps1 -ConfigRoot "$env:RUNNER_TEMP\obs" -Force -IgnoreRunning
+          $Left = @(Get-ChildItem "$env:RUNNER_TEMP\obs\basic\profiles", "$env:RUNNER_TEMP\obs\basic\scenes")
+          if ($Left.Count) { $Left | ForEach-Object FullName; exit 1 }
+
+      - name: Release zip builds and contains only runtime files
+        run: ./tools/Build-Release.ps1 -OutDir "$env:RUNNER_TEMP\dist"

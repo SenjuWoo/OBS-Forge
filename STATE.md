@@ -1,27 +1,49 @@
 # STATE · OBS-Forge
 
-Updated 2026-11-24 · **0.1.0**
+Updated 2026-11-24 · **0.2.0** (last known good: 0.2.0 once CI is green on its commit;
+before that v0.1.0)
 
-**Goal.** A fresh OBS install that streams well in one install step: SDR 8-bit Rec.709,
-H.264 High, a light HEVC recording session, and a generic scene collection — with no
-private scenes, overlays, keys or machine paths.
+**Goal.** A fresh OBS install that streams or records well in one install step, on any
+GPU: SDR 8-bit Rec.709, presets for Twitch/Kick/Rumble, YouTube, recording and vertical,
+a ready scene collection - with no private scenes, overlays, keys or machine paths.
 
-**Done.** Two profiles (`OBS-Forge 1080p60`, `OBS-Forge 1080p30`), the `OBS-Forge`
-scene collection (Starting Soon, Live, BRB, Ending), `Install.ps1` / `Verify.ps1` /
-`Uninstall.ps1`, `docs/SETTINGS.md`, `docs/HDR.md`, MIT licence, README.
+**Done.** 0.2.0: preset catalogue (9 presets) generated per encoder family (NVENC / AMF /
+Quick Sync / x264) chosen by OBS's own probes; menu installer + `.cmd` launchers; in-place
+upgrades that keep `service.json`, hotkeys and soft settings; marker files; Verify as a
+doctor; vertical collection; Game Capture + audio devices in the collections; fixed NVENC
+keys (F1), Verify crash (F2), silent collection (F3), label position (F4), split-file doc
+claim (F5). See PLAN.md for every finding and its evidence.
 
-**Validation.** `Install.ps1` into a clean config root wrote both profiles and the
-collection and read back `60 fps, 6000 kbps, NV12/709/Partial` and `30 fps, 4500 kbps`.
-OBS 33.0.2 in portable mode loaded the collection (4 scenes), 1920×1080@60, with no
-`NVENC` / `Rec. 2100` errors in the log. `Verify.ps1` passed against that install
-(including the log scan and the HDR display line). `Uninstall.ps1` removed only the
-pack's files and left a timestamped backup.
+**Validation.**
+- `tests/Run-Tests.ps1`: 707 assertions PASS on Windows PowerShell 5.1 (golden vs 0.1.0
+  files, all presets x families, caps fallbacks, INI merge, collection geometry, clean
+  install / re-run / -Force / encoder switch, all-presets x264, Verify drift cases,
+  0.1.0 upgrade, foreign profile, uninstall).
+- `tests/Runtime-Smoke.ps1` against the real OBS 33.0.2 (portable junction copy, RTX 4080
+  SUPER): 1080p60, YouTube 1080p60, Record 1440p60, Vertical - record and stream encoders
+  both started; OBS log shows exactly the JSON values (record P4/CQ22/HEVC Main, stream
+  P5/H.264 High/CBR 6000, YouTube HEVC Main 12000, 1440p record with stream at 1920x1080,
+  1080x1920 vertical), Desktop Audio and Mic/Aux loaded, 8 recordings written.
+- Real recorded frames: labels centred in 16:9 and 9:16; a hybrid MP4 killed mid-record
+  is playable (ffprobe: hevc Main yuv420p tv bt709, 3 AAC tracks).
+- Not runtime-proven here (no such GPU): AMF and Quick Sync presets. Their keys come from
+  OBS 33.0.2 source (texture-amf.cpp, obs-qsv11.c).
 
-**Next.** Publish the first tag after any README/CI tweak; add a GitHub Actions check that
-runs `Verify.ps1` against a fixture config root if the repo grows.
+**NEXT ACTION.** Push 0.2.0, converge CI on the exact SHA (5.1 + pwsh), build the zip
+from that SHA, publish GitHub release v0.2.0, verify asset bytes.
 
-**Build / run.** No build. `.\Install.ps1`, `.\Verify.ps1`, `.\Uninstall.ps1` from the
-repo root; `-ConfigRoot <path>` targets a portable or custom OBS config folder.
+**Open items.** Field-test AMF / Quick Sync profiles on real hardware. Consider an
+`-Activate` switch only if users ask (it would need writing OBS's `user.ini`, which the
+ownership rules exclude).
 
-**Recovery.** `Uninstall.ps1` removes the pack; the timestamped copy in `backups\` is the
-rollback. The pack never touches other profiles or collections.
+**Build / run.** No build. `Install.cmd` / `.\Install.ps1 [-Menu|-List|-Preset ..|-Encoder ..]`,
+`Verify.cmd`, `Uninstall.cmd`. Tests: `powershell -NoProfile -ExecutionPolicy Bypass -File
+tests\Run-Tests.ps1`; runtime: `tests\Runtime-Smoke.ps1`. Release zip:
+`tools\Build-Release.ps1 -Ref <sha>`.
+
+**Logs.** `%LOCALAPPDATA%\OBS-Forge\logs\obs-forge.log` (installer); OBS's own logs in
+`<config root>\logs`.
+
+**Recovery.** `Uninstall.ps1` removes the pack; the timestamped copy in `backups\` (or
+`%LOCALAPPDATA%\OBS-Forge\backups`) is the rollback. The pack never touches other
+profiles or collections.
