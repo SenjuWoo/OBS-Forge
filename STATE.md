@@ -28,8 +28,7 @@ claim (F5). See PLAN.md for every finding and its evidence.
 - Not runtime-proven here (no such GPU): AMF and Quick Sync presets. Their keys come from
   OBS 33.0.2 source (texture-amf.cpp, obs-qsv11.c).
 
-**NEXT ACTION.** Push 0.2.0, converge CI on the exact SHA (5.1 + pwsh), build the zip
-from that SHA, publish GitHub release v0.2.0, verify asset bytes.
+**NEXT ACTION.** None pending. v0.2.0 released from 2a0e6c5 (CI green on 5.1 + 7); asset verified. Next work: field-test AMF / Quick Sync profiles.
 
 **Open items.** Field-test AMF / Quick Sync profiles on real hardware. Consider an
 `-Activate` switch only if users ask (it would need writing OBS's `user.ini`, which the
