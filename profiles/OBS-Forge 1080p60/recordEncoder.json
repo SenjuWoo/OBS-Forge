@@ -1,0 +1,12 @@
+{
+    "rate_control": "CQP",
+    "cqp": 22,
+    "keyint_sec": 2,
+    "preset2": "p4",
+    "tune": "hq",
+    "multipass": "qres",
+    "profile": "main",
+    "bf": 0,
+    "lookahead": false,
+    "psycho_aq": true
+}

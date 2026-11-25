@@ -1,0 +1,5 @@
+backups/
+*.zip
+*.log
+.venv/
+__pycache__/
